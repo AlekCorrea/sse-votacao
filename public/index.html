@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enquete em Tempo Real</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background: #f5f5f5;
+    }
+
+    .container {
+      background: white;
+      width: 400px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .java {
+      background: #f89820;
+      color: white;
+    }
+
+    .python {
+      background: #3776ab;
+      color: white;
+    }
+
+    .js {
+      background: #f7df1e;
+    }
+
+    h2 {
+      margin-top: 30px;
+    }
+
+    .votos {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Qual linguagem você prefere?</h1>
+
+    <button class="java" onclick="votar('Java')">
+      Java
+    </button>
+
+    <button class="python" onclick="votar('Python')">
+      Python
+    </button>
+
+    <button class="js" onclick="votar('JavaScript')">
+      JavaScript
+    </button>
+
+    <h2>Resultado em tempo real</h2>
+
+    <div class="votos">
+      Java: <span id="java">0</span>
+    </div>
+
+    <div class="votos">
+      Python: <span id="python">0</span>
+    </div>
+
+    <div class="votos">
+      JavaScript: <span id="javascript">0</span>
+    </div>
+  </div>
+
+  <script>
+    // Conexão SSE
+    const eventSource = new EventSource("/eventos");
+
+    eventSource.onmessage = (event) => {
+      const votos = JSON.parse(event.data);
+
+      document.getElementById("java").textContent =
+        votos.Java;
+
+      document.getElementById("python").textContent =
+        votos.Python;
+
+      document.getElementById("javascript").textContent =
+        votos.JavaScript;
+    };
+
+    async function votar(linguagem) {
+      await fetch("/votar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ linguagem }),
+      });
+    }
+  </script>
+
+</body>
+</html>
