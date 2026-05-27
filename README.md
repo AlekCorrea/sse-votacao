@@ -147,6 +147,6 @@ A enquete apresenta botões para votação e um contador atualizado em tempo rea
 
 ## 👨‍💻 Autor
 
-**Alek Correa**
+**Alessandra Corrêa**
 
 Projeto desenvolvido para fins acadêmicos utilizando **Server-Sent Events (SSE)**.
